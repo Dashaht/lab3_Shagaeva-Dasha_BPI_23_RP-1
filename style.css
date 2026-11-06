@@ -1,0 +1,98 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 0 15px;
+  background: #ffffff;    
+  color: #3e2723;           
+}
+
+h1 {
+  font-size: 24px;
+  color: #5d4037;         
+}
+
+button {
+  padding: 8px 16px;
+  font-size: 15px;
+  cursor: pointer;
+  border: 1px solid #5d4037;
+  background: #5d4037;      
+  color: #ffffff;         
+  border-radius: 4px;
+}
+
+button:disabled {
+  background: #bcaaa4;    
+  border-color: #bcaaa4;
+  cursor: not-allowed;
+}
+
+#status {
+  min-height: 22px;
+  font-weight: bold;
+}
+
+#posts {
+  list-style: none;
+  padding: 0;
+}
+
+#posts li {
+  border: 1px solid #d7ccc8;   
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  background: #efebe9;         
+}
+
+#posts li h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  color: #5d4037;            
+}
+
+#posts li p {
+  margin: 0;
+  font-size: 14px;
+  color: #4e342e;         
+}
+
+form {
+  border: 1px solid #d7ccc8;
+  border-radius: 6px;
+  padding: 15px;
+  background: #efebe9;        
+}
+
+form h2 {
+  margin-top: 0;
+  font-size: 18px;
+  color: #5d4037;
+}
+
+label {
+  display: block;
+  margin: 10px 0 4px;
+  font-weight: bold;
+  color: #4e342e;
+}
+
+input,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid #bcaaa4;  
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  background: #ffffff;       
+  color: #3e2723;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #5d4037;   
+}

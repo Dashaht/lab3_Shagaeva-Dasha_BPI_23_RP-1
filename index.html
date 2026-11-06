@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Лабораторная работа 3 — Доска публикаций</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Доска публикаций</h1>
+
+  <!-- Кнопка загрузки публикаций (Запрос GET) -->
+  <button id="loadBtn">Загрузить публикации</button>
+
+  <!-- Область сообщений: загрузка, успех, ошибка -->
+  <p id="status"></p>
+
+  <!-- Область для списка публикаций -->
+  <ul id="posts"></ul>
+
+  <hr>
+
+  <!-- Форма создания публикации (Запрос POST) -->
+  <form id="postForm">
+    <h2>Новая публикация</h2>
+
+    <label for="title">Заголовок</label>
+    <input type="text" id="title" placeholder="Введите заголовок">
+
+    <label for="body">Текст</label>
+    <textarea id="body" rows="4" placeholder="Введите текст публикации"></textarea>
+
+    <button type="submit" id="createBtn">Создать публикацию</button>
+  </form>
+
+  <!-- Подключаем скрипт -->
+  <script src="app.js" defer></script>
+</body>
+</html>
