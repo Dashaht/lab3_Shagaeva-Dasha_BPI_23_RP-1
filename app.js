@@ -23,58 +23,61 @@ function showStatus(message, isError = false) {
   statusEl.style.color = isError ? "red" : "green";    // цвет сообщения
 }
 
-// 2. Функция создать <li> с заголовком и текстом публикации и добавить его в список
-// Текст вставляем через textContent — данные пришли извне (безопасно)
+// 2. Функция добавления карточки публикации в список 
 function renderPost(post) {
   const li = document.createElement("li");
 
   const h3 = document.createElement("h3");
-  h3.textContent = post.title;   // заголовок публикации
+  h3.textContent = post.title;   // кладем внутр h3 текст заголова публикации
 
   const p = document.createElement("p");
   p.textContent = post.body;     // текст публикации
 
-  li.appendChild(h3);
-  li.appendChild(p);
+  li.appendChild(h3); // вкладываем h3 внутр li 
+  li.appendChild(p); // вкладываем p внутр li 
 
-  postsList.appendChild(li);     // добавляем <li> в <ul>
+  postsList.appendChild(li);     // добавляем <li> в <ul>, то есть страницу
 }
 
-// Загрузка публикаций (GET)
+// Функция асинхронная, загрузка публикаций (GET)
 async function loadPosts() {
-  showStatus("Загрузка...");
-  loadBtn.disabled = true;        // блокируем кнопку, чтобы не нажать дважды
-  postsList.textContent = "";     // очищаем старый список
+  showStatus("Загрузка...");  // показываем пользователю сообщение, о том, что происходит
+  loadBtn.disabled = true;        // блокируем кнопку, чтобы не нажать дважды, пока идет запрос
+  postsList.textContent = "";     // очищаем старый список перед новой загрузкой
 
+  // то что может завершиться ошибкой
   try {
-    // Ждём ответ сервера
+    // fetch(GET_URL) оправляет запрос методом GET, на указаный адрес. fetch сразу возращает Promise
+    // await означает подождать пока это не завершится, но во время нее страница не замораживается, она работает
+    // после выполнение вернятся элемент Response содержащий статус, заголовок и тело
     const response = await fetch(GET_URL);
 
-    // fetch НЕ считает 404/500 ошибкой — проверяем сами
+    // fetch НЕ считает 404/500 ошибкой, поэтому проверяем сами
+    // response.ok свойство true, если статус в диапазоне 200-299, иначе false
     if (!response.ok) {
-      throw new Error("Ошибка сервера: " + response.status);
+      throw new Error("Ошибка сервера: " + response.status); // при ошибке throw немедленно прерывает выполнение блока и переходит к catch
     }
 
-    // Ждём чтение тела ответа как JSON
+    // Читаем тело ответа и делает его как json, возращаем promise
     const posts = await response.json();
 
-    // Если данных нет — выводим отдельное сообщение
+    // Проверяем есть ли данные в массиве, если данных нет, выводим отдельное сообщение
     if (posts.length === 0) {
       showStatus("Публикаций нет");
       return;                    
     }
 
-    // Выводим каждую публикацию на страницу
+    // Выводим каждую публикацию на страницу, если они есть, forEach для каждого элемента массива
     posts.forEach(function (post) {
-      renderPost(post);
+      renderPost(post);  // создаем li и добавляем в список
     });
 
     showStatus("Загружено публикаций: " + posts.length);
-  } catch (error) {
+  } catch (error) {  // ошибки ловим
     // Сюда попадают и сетевые ошибки, и наша ошибка из response.ok
     showStatus("Не удалось загрузить данные: " + error.message, true);
-  } finally {
-    // Выполняется всегда: снова включаем кнопку для повторной попытки
+  } finally { // выполняет всегда 
+    // Снова включаем кнопку для повторной попытки
     loadBtn.disabled = false;
   }
 }
@@ -83,18 +86,18 @@ async function loadPosts() {
 loadBtn.addEventListener("click", loadPosts);
 
 // Создание публикации (POST)
-
 postForm.addEventListener("submit", async function (event) {
   event.preventDefault();   // отменяем стандартную перезагрузку страницы
 
+  // Валидация формы
   // Убираем пробелы по краям
   const title = titleInput.value.trim();
   const body = bodyInput.value.trim();
 
-  // Валидация: если поля не пустые и не из одних пробеловf
+  // Если поля не пустые и не из одних пробелов
   if (title === "" || body === "") {
     showStatus("Заполните заголовок и текст публикации", true);
-    return;                 // запрос не отправляем
+    return;                 // запрос не отправляем, так как ошибка
   }
 
   showStatus("Отправка...");
@@ -107,14 +110,14 @@ postForm.addEventListener("submit", async function (event) {
       headers: {
         "Content-Type": "application/json"   // сообщаем, что в теле JSON
       },
-      body: JSON.stringify({                
+      body: JSON.stringify({        // превращаем js объект в строку json          
         title: title,
         body: body,
         userId: 1
       })
     });
 
-    // Проверяем статус ответа
+    // Проверяем статус ответа, не блокирую страницу
     if (!response.ok) {
       throw new Error("Ошибка сервера: " + response.status);
     }
@@ -130,9 +133,9 @@ postForm.addEventListener("submit", async function (event) {
 
     // Очищаем форму
     postForm.reset();
-  } catch (error) {
+  } catch (error) {  // ошибки
     showStatus("Не удалось создать публикацию: " + error.message, true);
-  } finally {
+  } finally {  // выполняет всегда
     // Кнопка снова активна в любом случае
     createBtn.disabled = false;
   }
