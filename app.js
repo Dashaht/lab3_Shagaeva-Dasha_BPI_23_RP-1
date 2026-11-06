@@ -91,7 +91,7 @@ postForm.addEventListener("submit", async function (event) {
   const title = titleInput.value.trim();
   const body = bodyInput.value.trim();
 
-  // Валидация: если поля не пустые и не из одних пробелов
+  // Валидация: если поля не пустые и не из одних пробеловf
   if (title === "" || body === "") {
     showStatus("Заполните заголовок и текст публикации", true);
     return;                 // запрос не отправляем
